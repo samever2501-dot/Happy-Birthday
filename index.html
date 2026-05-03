@@ -150,6 +150,39 @@ body {
     height: 100%;
     object-fit: cover;
 }
+/* ⭐ FINAL PAGE STYLE */
+.finalPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background: black;
+    text-align: center;
+    padding: 10px;
+}
+
+.finalPage h2 {
+    color: white;
+}
+
+.finalPage p {
+    color: white;
+    font-size: 14px;
+}
+
+/* 🔘 BIG BUTTON */
+.finalBtn {
+    font-size: 22px;
+    padding: 18px 30px;
+    border-radius: 12px;
+    background: #25D366;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
 
 audio { display: none; }
 </style>
@@ -185,32 +218,28 @@ audio { display: none; }
         <div class="page">
     <img src="img4.png">
 </div>
-        
-        <!-- ⭐ FINAL RATING PAGE -->
+  <!-- ⭐ FINAL PAGE -->
         <div class="page">
-            <div class="ratingBox">
 
-                <h2>⭐ Rate This Website</h2>
+            <div class="finalPage">
 
-                <div class="stars">
-                    <span onclick="rate(1)">⭐</span>
-                    <span onclick="rate(2)">⭐</span>
-                    <span onclick="rate(3)">⭐</span>
-                    <span onclick="rate(4)">⭐</span>
-                    <span onclick="rate(5)">⭐</span>
-                </div>
+                <h2>🎉 Done Reading?</h2>
 
-                <p id="ratingText">Tap stars to rate</p>
+                <p>
+                    How was your experience using this website?  
+                    You can let Samuel know what you think 😊
+                </p>
 
-                <button onclick="sendWhatsApp()">Send to WhatsApp</button>
+                <button class="finalBtn" onclick="sendDone()">
+                    DONE READING
+                </button>
 
             </div>
+
         </div>
 
     </div>
-
 </div>
-        
 
          <!-- 📌 SWIPE TEXT (BOTTOM - YOU ASKED FOR THIS) -->
         <div id="swipeText">👉 Swipe left or right to change page</div>
@@ -362,25 +391,12 @@ function updatePages(){
 
 /* INIT */
 updatePages();
-    /* ⭐ RATING */
-function rate(star) {
-    rating = star;
+/* 📲 DONE BUTTON → WHATSAPP */
+function sendDone() {
 
-    let stars = document.querySelectorAll(".stars span");
-
-    stars.forEach((s,i)=>{
-        if(i < star) s.classList.add("active");
-        else s.classList.remove("active");
-    });
-
-    document.getElementById("ratingText").innerText =
-        "You rated " + star + " star(s)";
-}
-
-/* 📲 WHATSAPP */
-function sendWhatsApp() {
     let phone = "60179063170"; // 🔁 CHANGE YOUR NUMBER
-    let msg = "⭐ Website rating: " + rating + "/5 stars";
+
+    let msg = "🎉 Someone finished your website!\n\n💬 They clicked DONE READING and visited everything.";
 
     let url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
 
@@ -391,4 +407,3 @@ function sendWhatsApp() {
 
 </body>
 </html>
-
