@@ -110,11 +110,12 @@ body {
     transform: translate(-50%, -50%) scale(1);
 }
 
-/* 📄 PAGES */
+/* 📄 PAGES (HIDDEN SYSTEM) */
 .page {
-    display: none;
+    position: absolute;
     width: 100%;
     height: 100%;
+    display: none;
 }
 
 .page.active {
@@ -126,7 +127,6 @@ body {
     height: 100%;
     object-fit: cover;
 }
-
 /* 📌 SWIPE TEXT (BOTTOM) */
 #swipeText {
     position: absolute;
@@ -138,6 +138,19 @@ body {
     text-shadow: 0 0 5px black;
     z-index: 40;
 }
+/* 👉 SWIPE LAYER (IMPORTANT) */
+#swipeLayer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+}
+.page img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 audio { display: none; }
 </style>
 </head>
@@ -152,12 +165,10 @@ audio { display: none; }
 <div class="scene" id="scene">
     <!-- 🎁 PRESENT -->
     <div id="present">🎁</div>
-     <!-- 🎁 PRESENT (CENTER BOTTOM) -->
-    <div id="present">🎁</div>
-
 
     <!-- 💌 CARD -->
     <div id="card">
+    <div id="swipeLayer"></div>
 
         <div class="page active">
             <img src="img1 .png">
@@ -170,9 +181,14 @@ audio { display: none; }
         <div class="page">
             <img src="img3 .png">
         </div>
+        
+        <div class="page">
+    <img src="img4.png">
+</div>
 
          <!-- 📌 SWIPE TEXT (BOTTOM - YOU ASKED FOR THIS) -->
         <div id="swipeText">👉 Swipe left or right to change page</div>
+        <div id="swipeArea"></div>
 
     </div>
 
@@ -265,23 +281,66 @@ present.addEventListener("dblclick", () => {
     }, 600);
 });
 
-/* 📄 CARD PAGES */
+/* 📖 SWIPE SYSTEM (FIXED + FULL SCREEN) */
 let pages = document.querySelectorAll(".page");
 let index = 0;
 
-document.getElementById("next").onclick = () => {
-    pages[index].classList.remove("active");
-    index = (index + 1) % pages.length;
-    pages[index].classList.add("active");
-};
+const swipeLayer = document.getElementById("swipeLayer");
 
-document.getElementById("prev").onclick = () => {
-    pages[index].classList.remove("active");
-    index = (index - 1 + pages.length) % pages.length;
-    pages[index].classList.add("active");
-};
+let startX = 0;
+
+/* TOUCH */
+swipeLayer.addEventListener("touchstart",(e)=>{
+    startX = e.touches[0].clientX;
+});
+
+swipeLayer.addEventListener("touchend",(e)=>{
+    let endX = e.changedTouches[0].clientX;
+    swipe(startX,endX);
+});
+
+/* MOUSE */
+swipeLayer.addEventListener("mousedown",(e)=>{
+    startX = e.clientX;
+});
+
+swipeLayer.addEventListener("mouseup",(e)=>{
+    let endX = e.clientX;
+    swipe(startX,endX);
+});
+
+/* SWIPE LOGIC */
+function swipe(start,end){
+    let diff = start - end;
+
+    if(diff > 50 && index < pages.length - 1){
+        index++;
+    }
+
+    if(diff < -50 && index > 0){
+        index--;
+    }
+
+    updatePages();
+}
+
+/* SHOW ONLY ACTIVE PAGE */
+function updatePages(){
+    pages.forEach((p,i)=>{
+        p.classList.remove("active");
+        if(i === index){
+            p.classList.add("active");
+        }
+    });
+}
+
+/* INIT */
+updatePages();
 
 </script>
+
+</body>
+</html>
 
 </body>
 </html>
